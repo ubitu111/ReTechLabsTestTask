@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ReTechLabsTestTask</string>
+    <string name="app_name">ReTech Labs Cat Test Task</string>
+    <string name="refresh_button_menu">refresh</string>
 </resources>
