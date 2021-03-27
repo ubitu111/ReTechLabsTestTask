@@ -1,8 +1,11 @@
 package ru.kireev.retechlabstesttask.view
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import org.koin.android.ext.android.inject
@@ -42,10 +45,28 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.refresh_menu) {
-            imageFragment.loadImage()
-            factsFragment.loadFact()
+            if (hasConnection()) {
+                imageFragment.loadImage()
+                factsFragment.loadFact()
+            } else {
+                showDialog()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun hasConnection(): Boolean {
+        val manager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network?.isConnected ?: false
+    }
+
+    private fun showDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.alert_dialog_title))
+            .setMessage(getString(R.string.alert_dialog_message))
+            .create()
+            .show()
     }
 }
